@@ -52,10 +52,10 @@ end
 function f:PrintDeaths(deathTimeString)
     print("You have died " .. FADeathCounterDB.deaths .. " times!")
     
-    if (FADeathCounterDB.deaths > 0) then
-        useText = "Last death was "
-    else
+    if (FADeathCounterDB.deaths == 1) then
         useText = "Started Tracking "
+    else
+        useText = "Last death was "
     end
 
     print(useText .. deathTimeString .. "ago")
