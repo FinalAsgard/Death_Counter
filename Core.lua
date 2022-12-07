@@ -7,13 +7,14 @@ local defaults = {
     deaths = 0,
     lastDeath = time(),
     guildAnnounce = false,
+    usePopupAlert = false,
 }
 
 function f:OnEvent(event, addOnName)
     if addOnName == "Death_Counter" then
-        print("Death Counter Loaded")
+        --print("Death Counter Loaded")
         FADeathCounterDB = FADeathCounterDB or CopyTable(defaults)
-        --self:InitializeOptions()
+        self:InitializeOptions()
     end
 
     if event == "PLAYER_DEAD" then
@@ -35,11 +36,11 @@ function f:InitializeOptions()
 
     local cb = CreateFrame("CheckButton", nil, self.panel, "InterfaceOptionsCheckButtonTemplate")
     cb:SetPoint("TOPLEFT", 20, -20)
-    cb.Text:SetText("Announce Death to Guild")
+    cb.Text:SetText("Use a pop up alert")
     cb:HookScript("OnClick", function(_, btn, down)
-        FADeathCounterDB.guildAnnounce = cb:GetChecked()
+        FADeathCounterDB.usePopupAlert = cb:GetChecked()
     end)
-    cb:SetChecked(FADeathCounterDB.guildAnnounce)
+    cb:SetChecked(FADeathCounterDB.usePopupAlert)
 
     InterfaceOptions_AddCategory(self.panel)
 end
@@ -58,7 +59,12 @@ function f:PrintDeaths(deathTimeString)
         useText = "Last death was "
     end
 
-    print(useText .. deathTimeString .. "ago")
+    messageText = useText .. deathTimeString .. "ago"
+    print(messageText)
+
+    if (FADeathCounterDB.usePopupAlert == true) then
+        message("You died " .. FADeathCounterDB.deaths .. " times.\n\n" .. messageText)
+    end
 end
 
 function f:RecordDeathTime(currentTime)
@@ -100,11 +106,10 @@ function f:CalculateTimesinceDeath(lastDiedTimeStamp, currentTimeStamp)
 end
 
 SlashCmdList.DEATHCOUNTER = function(msg)
-    --[[ Coming soon...
+    
     if msg == "config" then
         InterfaceOptionsFrame_OpenToCategory(f.panel)
     end
-    --]]
 
     if msg == "help" then
         print("/dcr -- Show your death count stats")
