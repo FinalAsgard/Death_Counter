@@ -1,0 +1,9 @@
+## Interface: 100002
+## Version: 1.0.0
+## Title: Death Counter
+## Notes: Track number of deaths and how it has been long since you last died.
+## Author: FinalAsgard
+
+## SavedVariablesPerCharacter: FADeathCounterDB
+
+Core.lua
