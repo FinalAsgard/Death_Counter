@@ -129,8 +129,6 @@ function f:AnnounceToGuild(deathTimeString)
     if (f:ShouldAnnounceToGuild() == true) then
         playerName = f:GetPlayerName()
         SendChatMessage(playerName .. " just died! They died " .. FADeathCounterDB.deaths .. " times. " .. playerName .. "'s last death was " .. deathTimeString .. "ago.", "GUILD")
-    else
-        print("Not in a guild")
     end
 end
 
