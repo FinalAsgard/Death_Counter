@@ -20,9 +20,11 @@ function f:OnEvent(event, addOnName)
     if event == "PLAYER_DEAD" then
         currentTime = time()
         deathTimeString = self:CalculateTimesinceDeath(FADeathCounterDB.lastDeath, currentTime)
+
         self:RecordDeathTime(currentTime)
         self:CountDeath()
         self:PrintDeaths(deathTimeString)
+        self:AnnounceToGuild(deathTimeString)
     end
 end
 
@@ -41,6 +43,14 @@ function f:InitializeOptions()
         FADeathCounterDB.usePopupAlert = cb:GetChecked()
     end)
     cb:SetChecked(FADeathCounterDB.usePopupAlert)
+
+    local cbGuildAnnounce = CreateFrame("CheckButton", nil, self.panel, "InterfaceOptionsCheckButtonTemplate")
+    cbGuildAnnounce:SetPoint("TOPLEFT", 20, -40)
+    cbGuildAnnounce.Text:SetText("Announce Deaths to Your Guild")
+    cbGuildAnnounce:HookScript("OnClick", function(_, btn, down)
+        FADeathCounterDB.guildAnnounce = cbGuildAnnounce:GetChecked()
+    end)
+    cbGuildAnnounce:SetChecked(FADeathCounterDB.guildAnnounce)
 
     InterfaceOptions_AddCategory(self.panel)
 end
@@ -103,6 +113,31 @@ function f:CalculateTimesinceDeath(lastDiedTimeStamp, currentTimeStamp)
     returnText = returnText .. diff .. " seconds "
 
     return returnText
+end
+
+function f:ShouldAnnounceToGuild()
+    shouldAnnounce = false
+
+    if (FADeathCounterDB.guildAnnounce and IsInGuild()) then
+        shouldAnnounce = true
+    end
+
+    return shouldAnnounce
+end
+
+function f:AnnounceToGuild(deathTimeString)
+    if (f:ShouldAnnounceToGuild() == true) then
+        playerName = f:GetPlayerName()
+        SendChatMessage(playerName .. " just died! They died " .. FADeathCounterDB.deaths .. " times. " .. playerName .. "'s last death was " .. deathTimeString .. "ago.", "GUILD")
+    else
+        print("Not in a guild")
+    end
+end
+
+function f:GetPlayerName()
+    playerName, playerRealm = UnitName("player")
+
+    return playerName
 end
 
 SlashCmdList.DEATHCOUNTER = function(msg)
