@@ -19,6 +19,8 @@ For any of the commands you can use ``/dcr`` as a shortcut for ``/deathcounter``
 
 **Use PopUp Alert:** Will give the death information in a pop up window so you can't miss it.
 
+**Announce Death in Your Guild:** Will share the death message in your guild, if you are in one.
+
 
 ## Authors
 
