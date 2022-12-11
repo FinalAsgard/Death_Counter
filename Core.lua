@@ -175,6 +175,7 @@ SlashCmdList.DEATHCOUNTER = function(msg)
 
     if msg == "" or msg == nil then
         print("You have died " .. FADeathCounterDB.deaths .. " times.")
+        print("You died " .. FADeathCounterDB.deathsToday .. " times today.")
         
         if (FADeathCounterDB.deaths > 0) then
             print("Last died " .. f:CalculateTimesinceDeath(FADeathCounterDB.lastDeath, time()))
