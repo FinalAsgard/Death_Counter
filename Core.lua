@@ -5,7 +5,9 @@ SLASH_DEATHCOUNTER2 = "/dcr"
 
 local defaults = {
     deaths = 0,
+    deathsToday = 0,
     lastDeath = time(),
+    lastDayDied = date("%d"),
     guildAnnounce = false,
     usePopupAlert = false,
 }
@@ -22,7 +24,10 @@ function f:OnEvent(event, addOnName)
         deathTimeString = self:CalculateTimesinceDeath(FADeathCounterDB.lastDeath, currentTime)
 
         self:RecordDeathTime(currentTime)
+
         self:CountDeath()
+        self:CountDeathsToday()
+
         self:PrintDeaths(deathTimeString)
         self:AnnounceToGuild(deathTimeString)
     end
@@ -60,8 +65,20 @@ function f:CountDeath()
     FADeathCounterDB.deaths = FADeathCounterDB.deaths + 1
 end
 
+function f:CountDeathsToday()
+    today = date("%d")
+
+    if (today ~= FADeathCounterDB.lastDayDied) then
+        FADeathCounterDB.lastDayDied = today
+        FADeathCounterDB.deathsToday = 0
+    end
+
+    FADeathCounterDB.deathsToday = FADeathCounterDB.deathsToday + 1
+end
+
 function f:PrintDeaths(deathTimeString)
     print("You have died " .. FADeathCounterDB.deaths .. " times!")
+    print("You died " .. FADeathCounterDB.deathsToday .. " times today.")
     
     if (FADeathCounterDB.deaths == 1) then
         useText = "Started Tracking "
