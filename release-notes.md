@@ -1,5 +1,12 @@
 # Release Notes
 
+## v1.1.1
+---
+**Release Date**: 2024-09-01
+
+### NEW
+  * Fixed compatibility with 11.0.2
+
 ## v1.1.0
 ---
 **Release Date**: 2022-12-13

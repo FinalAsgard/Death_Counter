@@ -38,26 +38,27 @@ f:RegisterEvent("PLAYER_DEAD")
 f:SetScript("OnEvent", f.OnEvent)
 
 function f:InitializeOptions()
-    self.panel = CreateFrame("Frame")
+    self.panel = CreateFrame("Frame", "FADeathCounterOptionsPanel", UIParent)
     self.panel.name = "Death Counter"
 
-    local cb = CreateFrame("CheckButton", nil, self.panel, "InterfaceOptionsCheckButtonTemplate")
+    local cb = CreateFrame("CheckButton", "FADeathCounterUsePopupAlert", self.panel, "InterfaceOptionsCheckButtonTemplate")
     cb:SetPoint("TOPLEFT", 20, -20)
-    cb.Text:SetText("Use a pop up alert")
+    _G[cb:GetName() .. "Text"]:SetText("Use a pop up alert")
     cb:HookScript("OnClick", function(_, btn, down)
         FADeathCounterDB.usePopupAlert = cb:GetChecked()
     end)
     cb:SetChecked(FADeathCounterDB.usePopupAlert)
 
-    local cbGuildAnnounce = CreateFrame("CheckButton", nil, self.panel, "InterfaceOptionsCheckButtonTemplate")
-    cbGuildAnnounce:SetPoint("TOPLEFT", 20, -40)
-    cbGuildAnnounce.Text:SetText("Announce Deaths to Your Guild")
+    local cbGuildAnnounce = CreateFrame("CheckButton", "FADeathCounterGuildAnnounce", self.panel, "InterfaceOptionsCheckButtonTemplate")
+    cbGuildAnnounce:SetPoint("TOPLEFT", 20, -60)
+    _G[cbGuildAnnounce:GetName() .. "Text"]:SetText("Announce Deaths to Your Guild")
     cbGuildAnnounce:HookScript("OnClick", function(_, btn, down)
         FADeathCounterDB.guildAnnounce = cbGuildAnnounce:GetChecked()
     end)
     cbGuildAnnounce:SetChecked(FADeathCounterDB.guildAnnounce)
 
-    InterfaceOptions_AddCategory(self.panel)
+    local category = Settings.RegisterCanvasLayoutCategory(self.panel, self.panel.name)
+    Settings.RegisterAddOnCategory(category)
 end
 
 function f:CountDeath()

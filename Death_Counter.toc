@@ -1,5 +1,5 @@
-## Interface: 100002
-## Version: 1.1.0
+## Interface: 110002
+## Version: 1.1.1
 ## Title: Death Counter
 ## Notes: Track number of deaths and how it has been long since you last died.
 ## Author: FinalAsgard
